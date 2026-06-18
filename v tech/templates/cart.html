@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vin Tech | Shopping Cart</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .cart-container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .cart-card {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .table {
+            color: white;
+        }
+
+        .table thead {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .mpesa-box {
+            background: rgba(0, 128, 0, 0.18);
+            border: 1px solid rgba(0,255,0,0.35);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .total-box {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        footer {
+            margin-top: 80px;
+            background: #000;
+            padding: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
+            VIN TECH
+        </a>
+
+        <div>
+            <a href="{{ url_for('products') }}" class="btn btn-warning">
+                Continue Shopping
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container cart-container">
+
+    <div class="cart-card">
+
+        <h2 class="text-center mb-4">🛒 Your Shopping Cart</h2>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-info">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if cart %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Product</th>
+                            <th>Price (KES)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ item.product }}</td>
+                            <td>KES {{ "{:,.0f}".format(item.price) }}</td>
+                            <td>
+                                <a href="{{ url_for('remove_from_cart', index=loop.index0) }}"
+                                   class="btn btn-danger btn-sm">
+                                    Remove
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-end total-box mb-4">
+                Total: KES {{ "{:,.0f}".format(total) }}
+            </div>
+
+            <!-- M-PESA CHECKOUT -->
+            <div class="mpesa-box">
+                <h3 class="text-center mb-4">📱 M-Pesa Checkout</h3>
+
+                <div class="alert alert-success text-center">
+                    <strong>Till Number:</strong> 4381910
+                </div>
+
+                <form method="POST" action="{{ url_for('checkout') }}">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            M-Pesa Phone Number
+                        </label>
+                        <input type="text"
+                               name="phone"
+                               class="form-control form-control-lg"
+                               placeholder="2547XXXXXXXX"
+                               pattern="2547[0-9]{8}"
+                               required>
+                        <small class="text-light">
+                            Example: 254712345678
+                        </small>
+                    </div>
+
+                    <button type="submit"
+                            class="btn btn-success btn-lg w-100">
+                        Pay KES {{ "{:,.0f}".format(total) }} via M-Pesa
+                    </button>
+                </form>
+
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('clear_cart') }}"
+                       class="btn btn-outline-light">
+                        Clear Cart
+                    </a>
+                </div>
+            </div>
+
+        {% else %}
+            <div class="empty-cart">
+                <h3>Your cart is empty.</h3>
+                <p>Add some amazing products from our store.</p>
+
+                <a href="{{ url_for('products') }}"
+                   class="btn btn-warning btn-lg mt-3">
+                    Shop Now
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<footer>
+    <h4>Vin Tech Electronics</h4>
+    <p>Mombasa, Kenya | Premium Electronics & Accessories</p>
+    <p>📞 0740 742 614</p>
+</footer>
+
+</body>
+</html>
