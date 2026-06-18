@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Vin Tech</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark bg-dark shadow">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
+            Vin Tech Admin Panel
+        </a>
+
+        <div>
+            <a class="btn btn-outline-light me-2" href="{{ url_for('products') }}">View Site</a>
+            <a class="btn btn-warning" href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<!-- HEADER -->
+<section class="bg-danger text-white py-5">
+    <div class="container">
+        <h1 class="fw-bold">Admin Dashboard</h1>
+        <p>Manage users, monitor activity, and control Vin Tech system</p>
+    </div>
+</section>
+
+<!-- STATS -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 text-center">
+
+            <div class="col-md-4">
+                <div class="card shadow p-4">
+                    <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                    <h4>Total Users</h4>
+                    <h2>{{ users|length }}</h2>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow p-4">
+                    <i class="fas fa-box fa-3x text-success mb-3"></i>
+                    <h4>Products</h4>
+                    <h2>12+</h2>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow p-4">
+                    <i class="fas fa-chart-line fa-3x text-warning mb-3"></i>
+                    <h4>System Status</h4>
+                    <h2>Active</h2>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- USERS TABLE -->
+<section class="bg-light py-5">
+    <div class="container">
+
+        <h3 class="mb-4 fw-bold">Registered Users</h3>
+
+        <div class="card shadow">
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user['id'] }}</td>
+                                <td>{{ user['username'] }}</td>
+                                <td>{{ user['email'] }}</td>
+                                <td>
+                                    <span class="badge bg-primary">
+                                        {{ user['role'] }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-white text-center py-4">
+    <p class="mb-0">© 2026 Vin Tech Admin System</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vin Tech | Products</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 50px 0 30px;
+            color: #ffc107;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            transition: 0.3s;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .price {
+            color: #00ff88;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        footer {
+            margin-top: 80px;
+            background: #000;
+            padding: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
+            VIN TECH
+        </a>
+
+        <div>
+            <a href="{{ url_for('cart') }}" class="btn btn-warning">
+                🛒 Cart
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-5">
+
+    <!-- PHONE ACCESSORIES -->
+    <h2 class="section-title">📱 Smartphones & Phone Accessories</h2>
+
+    {% set phones = [
+        ('SAM 05', 18500, 'SAM 05.jpg'),
+        ('iphone', 10500, 'iPhone.jpg'),
+        ('iphone 13', 78500, 'iphone 13.jpg'),
+        ('iPhone 15', 108000, 'iphone 15.jpg'),
+        ('HP laptop', 138000, 'HP laptop.jpg'),
+        ('SAM A25', 22800, 'SAM A25.jpg'),
+        ('Fast Charger 25W', 1500, 'charger.jpg')
+    ] %}
+
+    <div class="row g-4">
+        {% for product, price, image in phones %}
+        <div class="col-md-4">
+            <div class="product-card text-center">
+                <img src="{{ url_for('static', filename='images/' + image) }}"
+                     alt="{{ product }}"
+                     class="img-fluid mb-3"
+                     style="height:450px; width:200%; object-fit:cover; border-radius:15px;">
+
+                <h4>{{ product }}</h4>
+                <p class="price">KES {{ "{:,.0f}".format(price) }}</p>
+
+                <form method="POST" action="{{ url_for('add_to_cart') }}">
+                    <input type="hidden" name="product" value="{{ product }}">
+                    <input type="hidden" name="price" value="{{ price }}">
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- COMPUTER ACCESSORIES -->
+    <h2 class="section-title">💻 Computer Accessories</h2>
+
+    {% set computers = [
+        ('HP Desktop Complete Set', 35000, 'hp_desktop.jpg'),
+        ('HP Laptop Core i5', 52000, 'hp_laptop.jpg'),
+        ('Lenovo Laptop Core i7', 68000, 'lenovo_laptop.jpg'),
+        ('8GB DDR4 RAM', 4500, 'ram.jpg'),
+        ('Dell CPU Tower', 18000, 'dell_cpu.jpg')
+    ] %}
+
+    <div class="row g-4">
+        {% for product, price, image in computers %}
+        <div class="col-md-4">
+            <div class="product-card text-center">
+                <img src="{{ url_for('static', filename='images/' + image) }}"
+                     alt="{{ product }}"
+                     class="img-fluid mb-3"
+                     style="height:250px; width:100%; object-fit:cover; border-radius:15px;">
+
+                <h4>{{ product }}</h4>
+                <p class="price">KES {{ "{:,.0f}".format(price) }}</p>
+
+                <form method="POST" action="{{ url_for('add_to_cart') }}">
+                    <input type="hidden" name="product" value="{{ product }}">
+                    <input type="hidden" name="price" value="{{ price }}">
+
+                    <button type="submit" class="btn btn-success w-100">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- ELECTRONICS -->
+    <h2 class="section-title">🔌 Electronics & Home Devices</h2>
+
+    {% set electronics = [
+        ('Extension Cable 6-Way', 2500, 'extension.jpg'),
+        ('TV Guard', 1800, 'tv_guard.jpg'),
+        ('Fridge Guard', 2200, 'fridge_guard.jpg'),
+        ('Wireless Headphones', 3500, 'headphones.jpg'),
+        ('Bluetooth Speaker', 2800, 'speaker.jpg')
+    ] %}
+
+    <div class="row g-4">
+        {% for product, price, image in electronics %}
+        <div class="col-md-4">
+            <div class="product-card text-center">
+                <img src="{{ url_for('static', filename='images/' + image) }}"
+                     alt="{{ product }}"
+                     class="img-fluid mb-3"
+                     style="height:250px; width:100%; object-fit:cover; border-radius:15px;">
+
+                <h4>{{ product }}</h4>
+                <p class="price">KES {{ "{:,.0f}".format(price) }}</p>
+
+                <form method="POST" action="{{ url_for('add_to_cart') }}">
+                    <input type="hidden" name="product" value="{{ product }}">
+                    <input type="hidden" name="price" value="{{ price }}">
+
+                    <button type="submit" class="btn btn-danger w-100">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<footer>
+    <h4>Vin Tech Electronics</h4>
+    <p>Mombasa, Kenya | Quality Tech at Affordable Prices</p>
+    <p>📞 0740 742 614</p>
+</footer>
+
+</body>
+</html>
